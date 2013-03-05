@@ -19,3 +19,6 @@
 [submodule "modules/phpqatools"]
 	path = modules/phpqatools
 	url = git://github.com/rafaelfelix/puppet-phpqatools.git
+[submodule "modules/php"]
+	path = modules/php
+	url = git://github.com/example42/puppet-php.git
