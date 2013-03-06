@@ -85,11 +85,22 @@ class setup-php
 
 class setup-mongodb
 {
-	class { 'mongodb': 
-		
-	}
+	class { 'mongodb': }
+	
+	exec { 'allow remote mongo connections':
+		command => "/usr/bin/sudo sed -i 's/bind_ip = 127.0.0.1/bind_ip = 0.0.0.0/g' /etc/mongodb.conf",
+		notify  => Service['mongodb'],
+		onlyif  => '/bin/grep -qx  "bind_ip = 127.0.0.1" /etc/mongodb.conf',
+	}	
 }
 
+class setup-mysql
+{
+	class { 'mysql': 
+		root_password => 'password',
+		port => 3306
+	}
+}
 
 class development 
 {
@@ -102,7 +113,7 @@ class development
 }
 
 class { 'apt':
-  always_apt_update    => true
+  always_apt_update => true
 }
 
 Exec["apt-get update"] -> Package <| |>
@@ -113,3 +124,4 @@ include development
 include setup-apache
 include setup-php
 include setup-mongodb
+include setup-mysql
