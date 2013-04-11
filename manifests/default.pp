@@ -4,7 +4,7 @@ Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 class system-update 
 {
-    include apt;
+    include apt
 
     file { "/etc/apt/sources.list.d/dotdeb.list":
         owner  => root,
