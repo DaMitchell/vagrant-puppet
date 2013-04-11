@@ -54,6 +54,8 @@ class setup-apache
 		port => '80',
 		docroot => $docroot,
 		configure_firewall => false,
+		override => 'FileInfo',
+
 	}
 }
 
