@@ -4,8 +4,6 @@ Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 class system-update 
 {
-    include apt
-
     file { "/etc/apt/sources.list.d/dotdeb.list":
         owner  => root,
         group  => root,
@@ -82,7 +80,7 @@ class setup-php
 {
 	#include php
 	
-	class { 'php': 
+	class { 'php':
 		module_prefix => 'php-'
 	}
 			
@@ -111,9 +109,16 @@ class setup-php
         group  => root,
         mode   => 664,
         source => '/vagrant/puppet/conf/mongo.ini',
+        require => Package['php'],
         notify => Service['httpd'],
     }
 }
+
+class { 'apt':
+  always_apt_update => true
+}
+
+Exec["apt-get update"] -> Package <| |>
 
 include system-update
 include setup-development
