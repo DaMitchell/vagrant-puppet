@@ -33,12 +33,17 @@ class system-update
 
 class setup-development
 {
-	$devPackages = [ "curl", "git" ]
+	$devPackages = [ "curl", "git", "rubygems" ]
 
 	package { $devPackages:
 		ensure => "installed",
 		require => Exec['apt-get update'],
 	}
+
+	exec { 'install SASS using RubyGems':
+        command => 'gem install sass',
+        require => Package["rubygems"],
+      }
 }
 
 class setup-apache
