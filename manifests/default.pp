@@ -20,10 +20,10 @@ class system-update
     }
 
 	exec { 'apt-get update':
-		command => 'apt-get update',
-	}
+	    command => 'apt-get update --fix-missing',
+    }
 
-	$sysPackages = [ "build-essential" ]
+    $sysPackages = [ "build-essential", "libicu-dev" ]
   
 	package { $sysPackages:
 		ensure => "installed",
@@ -114,6 +114,22 @@ class setup-php
         group  => root,
         mode   => 664,
         source => '/vagrant/puppet/conf/mongo.ini',
+        require => Package['php'],
+        notify => Service['httpd'],
+    }
+
+    exec { 'pecl-intl-install':
+        command => 'pecl install intl',
+        unless => 'pecl info intl',
+        notify => Service['httpd'],
+        require => Package['php-pear'],
+    }
+
+    file { '/etc/php5/conf.d/intl.ini':
+        owner  => root,
+        group  => root,
+        mode   => 664,
+        source => '/vagrant/puppet/conf/intl.ini',
         require => Package['php'],
         notify => Service['httpd'],
     }
