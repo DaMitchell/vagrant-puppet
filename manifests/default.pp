@@ -23,7 +23,7 @@ class system-update
 	    command => 'apt-get update --fix-missing',
     }
 
-    $sysPackages = [ "build-essential", "libicu-dev" ]
+    $sysPackages = [ "build-essential", "libicu-dev", "libpcre3-dev" ]
   
 	package { $sysPackages:
 		ensure => "installed",
