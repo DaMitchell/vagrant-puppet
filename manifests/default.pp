@@ -133,6 +133,22 @@ class setup-php
         require => Package['php'],
         notify => Service['httpd'],
     }
+
+    exec { 'pecl-apc-install':
+        command => 'pecl install apc',
+        unless => 'pecl info apc',
+        notify => Service['httpd'],
+        require => Package['php-pear'],
+    }
+
+    file { '/etc/php5/conf.d/apc.ini':
+        owner  => root,
+        group  => root,
+        mode   => 664,
+        source => '/vagrant/puppet/conf/apc.ini',
+        require => Package['php'],
+        notify => Service['httpd'],
+    }
 }
 
 class { 'apt':
